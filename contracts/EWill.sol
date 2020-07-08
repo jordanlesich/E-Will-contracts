@@ -3,7 +3,10 @@ pragma solidity >=0.6.0 <0.7.0;
 
 contract EWill {
     address payable owner;
-    address nominee;
+    address payable nominee;
+    uint256 lastCheckInBlock;
+    uint256 minBlockBuffer;
+    bool isMissing;
 
     event Deposit(address indexed sender, uint256 amount, uint256 balance);
     event OwnershipTransferred(
@@ -15,13 +18,13 @@ contract EWill {
         address indexed newNominee
     );
 
-    constructor(address _nominee) public {
-        require(
-            _nominee != address(0),
-            "Error: new nominee is the zero address"
-        );
+    constructor(address payable _nominee, uint256 _minBlockBuffer) public {
+        require(_nominee != address(0), "Error: nominee is the zero address");
         owner = msg.sender;
         nominee = _nominee;
+        lastCheckInBlock = block.number;
+        minBlockBuffer = _minBlockBuffer;
+        isMissing = false;
     }
 
     receive() external payable {
@@ -30,6 +33,11 @@ contract EWill {
 
     modifier onlyOwner() {
         require(msg.sender == owner, "Error: Not owner");
+        _;
+    }
+
+    modifier onlyNominee() {
+        require(msg.sender == nominee, "Not a nominee");
         _;
     }
 
@@ -42,7 +50,7 @@ contract EWill {
         owner = _newOwner;
     }
 
-    function changeNominee(address _nominee) public onlyOwner {
+    function changeNominee(address payable _nominee) public onlyOwner {
         require(
             _nominee != address(0),
             "Error: new nominee is the zero address"
@@ -52,11 +60,25 @@ contract EWill {
     }
 
     function checkIn() public onlyOwner {
-        //TODO
+        lastCheckInBlock = block.number;
     }
 
-    function withdraw(uint256 value) public onlyOwner {
+    function hasGoneMissing() public returns (bool) {
+        if (block.number - lastCheckInBlock > minBlockBuffer) {
+            isMissing = true;
+        } else {
+            return false;
+        }
+        return isMissing;
+    }
+
+    function withdrawFunds(uint256 value) public onlyOwner {
         owner.transfer(value);
+    }
+
+    function claimInheritence() public onlyNominee {
+        require(isMissing, "Error: was active recently");
+        nominee.transfer(address(this).balance);
     }
 
     function destroy() public onlyOwner {

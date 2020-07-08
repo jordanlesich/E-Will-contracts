@@ -1,0 +1,22 @@
+{
+  "name": "e-will",
+  "version": "1.0.0",
+  "description": "",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "truffle test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MellowBits/E-Will-contracts.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MellowBits/E-Will-contracts/issues"
+  },
+  "homepage": "https://github.com/MellowBits/E-Will-contracts#readme"
+}
