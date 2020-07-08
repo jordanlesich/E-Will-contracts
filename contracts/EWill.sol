@@ -16,6 +16,10 @@ contract EWill {
     );
 
     constructor(address _nominee) public {
+        require(
+            _nominee != address(0),
+            "Error: new nominee is the zero address"
+        );
         owner = msg.sender;
         nominee = _nominee;
     }
@@ -30,11 +34,19 @@ contract EWill {
     }
 
     function transferOwnership(address payable _newOwner) public onlyOwner {
+        require(
+            _newOwner != address(0),
+            "Error: new owner is the zero address"
+        );
         emit OwnershipTransferred(owner, _newOwner);
         owner = _newOwner;
     }
 
     function changeNominee(address _nominee) public onlyOwner {
+        require(
+            _nominee != address(0),
+            "Error: new nominee is the zero address"
+        );
         emit NomineeChanged(owner, _nominee);
         nominee = _nominee;
     }
