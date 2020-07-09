@@ -1,22 +1,28 @@
 {
-  "name": "e-will",
-  "version": "1.0.0",
-  "description": "",
-  "main": "truffle-config.js",
-  "directories": {
-    "test": "test"
-  },
-  "scripts": {
-    "test": "truffle test"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/MellowBits/E-Will-contracts.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/MellowBits/E-Will-contracts/issues"
-  },
-  "homepage": "https://github.com/MellowBits/E-Will-contracts#readme"
+	"name": "e-will",
+	"version": "1.0.0",
+	"description": "",
+	"main": "truffle-config.js",
+	"directories": {
+		"test": "test"
+	},
+	"scripts": {
+		"test": "truffle test"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/MellowBits/E-Will-contracts.git"
+	},
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/MellowBits/E-Will-contracts/issues"
+	},
+	"homepage": "https://github.com/MellowBits/E-Will-contracts#readme",
+	"devDependencies": {
+		"@truffle/hdwallet-provider": "^1.0.34",
+		"chai": "^4.2.0",
+		"chai-as-promised": "^7.1.1",
+		"truffle": "^5.1.19"
+	}
 }
