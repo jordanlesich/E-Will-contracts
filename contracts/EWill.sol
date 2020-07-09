@@ -2,10 +2,10 @@
 pragma solidity >=0.6.0 <0.7.0;
 
 contract EWill {
-    address payable owner;
-    address payable nominee;
-    uint256 lastCheckInBlock;
-    uint256 minBlockBuffer;
+    address payable public owner;
+    address payable public nominee;
+    uint256 public lastCheckInBlock;
+    uint256 public minBlockBuffer;
     bool isMissing;
 
     event Deposit(address indexed sender, uint256 amount, uint256 balance);
