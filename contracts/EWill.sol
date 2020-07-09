@@ -2,11 +2,10 @@
 pragma solidity >=0.6.0 <0.7.0;
 
 contract EWill {
-    address payable public owner;
-    address payable public nominee;
-    uint256 public lastCheckInBlock;
-    uint256 public minBlockBuffer;
-    bool isMissing;
+    address payable owner;
+    address payable nominee;
+    uint256 lastCheckInBlock;
+    uint256 minBlockBuffer;
 
     event Deposit(address indexed sender, uint256 amount, uint256 balance);
     event OwnershipTransferred(
@@ -24,7 +23,6 @@ contract EWill {
         nominee = _nominee;
         lastCheckInBlock = block.number;
         minBlockBuffer = _minBlockBuffer;
-        isMissing = false;
     }
 
     receive() external payable {
@@ -59,26 +57,25 @@ contract EWill {
         nominee = _nominee;
     }
 
-    function checkIn() public onlyOwner {
+    function checkIn() external onlyOwner {
         lastCheckInBlock = block.number;
     }
 
-    function hasGoneMissing() public returns (bool) {
-        if (block.number - lastCheckInBlock > minBlockBuffer) {
-            isMissing = true;
-        } else {
-            return false;
-        }
-        return isMissing;
+    function checkGoneMissing() external view returns (bool) {
+        return (block.number - lastCheckInBlock > minBlockBuffer);
     }
 
-    function withdrawFunds(uint256 value) public onlyOwner {
+    function withdrawFunds(uint256 value) external onlyOwner {
         owner.transfer(value);
     }
 
-    function claimInheritence() public onlyNominee {
-        require(isMissing, "Error: was active recently");
+    function claimInheritence() external onlyNominee {
+        require(
+            block.number - lastCheckInBlock > minBlockBuffer,
+            "Nope. Ain't dead yet."
+        );
         nominee.transfer(address(this).balance);
+        selfdestruct(nominee);
     }
 
     function destroy() public onlyOwner {
