@@ -1,6 +1,7 @@
 /** @format */
 
 const chai = require("chai");
+const { assert } = require("chai");
 chai.use(require("chai-as-promised"));
 
 const expect = chai.expect;
@@ -19,9 +20,11 @@ contract("EWill", (accounts) => {
 
 	describe("constructor", () => {
 		it("should deploy", async () => {
-			const wallet = await EWill.new(nominee, MIN_BLOCK_BUFFER);
+			const ewill = await EWill.new(nominee, MIN_BLOCK_BUFFER);
 
-			assert.equal(await EWill.owner(), owner);
+			assert.equal(await ewill.owner(), owner);
+			assert.equal(await ewill.nominee(), nominee);
+			assert.equal(await ewill.minBlockBuffer(), MIN_BLOCK_BUFFER);
 		});
 	});
 });
